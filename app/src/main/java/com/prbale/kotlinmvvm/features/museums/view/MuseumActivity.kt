@@ -7,9 +7,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.prbale.kotlinmvvm.R
+import com.prbale.kotlinmvvm.base.Status
 import com.prbale.kotlinmvvm.base.di.Injection
-import com.prbale.kotlinmvvm.features.museums.model.Museum
-
+import com.prbale.kotlinmvvm.base.extensions.gone
+import com.prbale.kotlinmvvm.base.extensions.show
+import com.prbale.kotlinmvvm.features.museums.model.MuseumList
 import com.prbale.kotlinmvvm.features.museums.viewmodel.MuseumViewModel
 import kotlinx.android.synthetic.main.activity_museum.*
 import kotlinx.android.synthetic.main.layout_error.*
@@ -28,7 +30,7 @@ class MuseumActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        adapter = MuseumAdapter(viewModel.museums.value ?: emptyList())
+        adapter = MuseumAdapter(viewModel.getMuseums().value?.data?.data ?: emptyList())
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
@@ -49,46 +51,67 @@ class MuseumActivity : AppCompatActivity() {
         ).get(MuseumViewModel::class.java)
 
         // Set Observers
-        viewModel.museums.observe(this, renderMuseums)
-        viewModel.isViewLoading.observe(this, isViewLoadingObserver)
-        viewModel.onMessageError.observe(this, onMessageErrorObserver)
-        viewModel.isEmptyList.observe(this, emptyListObserver)
+        viewModel.getMuseums()
+            .observe(this, Observer {
+                when(it.status) {
+                    Status.LOADING -> {
+                        showLoading()
+                    }
+                    Status.SUCCESS -> {
+                        hideLoading()
+                        displayMuseums(it.data)
+                    }
+                    Status.ERROR -> {
+                        hideLoading()
+                        displayError(it.message)
+                    }
+                }
+            })
+
+
     }
 
     // Success
-    private val renderMuseums = Observer<List<Museum>> {
+    private fun displayMuseums(data: MuseumList?) {
 
         layoutError.visibility = View.GONE
         layoutEmpty.visibility = View.GONE
-        progressBar.visibility = View.GONE
         recyclerView?.visibility = View.VISIBLE
 
-        adapter.update(it)
+        data?.data?.let {
+            if(it.isEmpty()) {
+                showEmptyList()
+            }
+            else {
+                adapter.update(data.data)
+            }
+        }
+
     }
 
     // Loading
-    private val isViewLoadingObserver = Observer<Boolean> {
-        progressBar.visibility = if (it) View.VISIBLE else View.GONE
-
-        recyclerView?.visibility = View.GONE
-        layoutError.visibility = View.GONE
-        layoutEmpty.visibility = View.GONE
+    private fun showLoading() {
+        progressBar.show()
     }
 
-    private val onMessageErrorObserver = Observer<Any> {
-        layoutError.visibility = View.VISIBLE
-        textViewError.text = "$it"
-
-        progressBar.visibility = View.GONE
-        recyclerView?.visibility = View.GONE
-        layoutEmpty.visibility = View.GONE
+    private fun hideLoading() {
+        progressBar.gone()
     }
 
-    private val emptyListObserver = Observer<Boolean> {
-        progressBar.visibility = View.GONE
-        recyclerView?.visibility = View.GONE
-        layoutError.visibility = View.GONE
-        layoutEmpty.visibility = View.VISIBLE
+    private fun displayError(errMsg: String?) {
+        layoutError.show()
+        textViewError.text = errMsg
+
+        progressBar.gone()
+        recyclerView?.gone()
+        layoutEmpty.gone()
+    }
+
+    private fun showEmptyList() {
+        progressBar.gone()
+        recyclerView?.gone()
+        layoutError.gone()
+        layoutEmpty.show()
     }
 
     override fun onResume() {

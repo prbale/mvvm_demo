@@ -1,5 +1,6 @@
 package com.prbale.kotlinmvvm.base.api
 
+import com.prbale.kotlinmvvm.features.museums.model.MuseumList
 import com.prbale.kotlinmvvm.features.museums.model.data.MuseumResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -39,7 +40,7 @@ object ApiClient {
     interface ServicesApiInterface {
 
         @GET("/v3/c62f311e-1219-4839-929c-15d5e93f9e29/")
-        fun museums(): Call<MuseumResponse>
+        fun museums(): Call<MuseumList>
 
     }
 }

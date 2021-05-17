@@ -1,13 +1,13 @@
 package com.prbale.kotlinmvvm.features.museums.model
 
-import android.os.Handler
 import com.prbale.kotlinmvvm.base.api.OperationCallback
+import com.prbale.kotlinmvvm.base.extensions.runDelayed
 
 class MuseumRepository(private val museumDataSource: MuseumDataSource) {
 
-    fun fetchMuseums(callback: OperationCallback<Museum>) {
-        Handler().postDelayed({
+    fun fetchMuseums(callback: OperationCallback<MuseumList>) {
+        runDelayed {
             museumDataSource.retrieveMuseums(callback)
-        }, 5000)
+        }
     }
 }
