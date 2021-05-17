@@ -1,5 +1,6 @@
 package com.prbale.kotlinmvvm.base.extensions
 
+import android.content.Context
 import android.os.Handler
 import android.view.View
 
@@ -25,4 +26,10 @@ fun View.gone() : View {
 
 fun runDelayed(action: () -> Unit) {
     Handler().postDelayed(action, 3000)
+}
+
+fun Context.hide(vararg input: View?) {
+    for (item in input) {
+        item?.gone()
+    }
 }

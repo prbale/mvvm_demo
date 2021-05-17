@@ -10,6 +10,7 @@ import com.prbale.kotlinmvvm.R
 import com.prbale.kotlinmvvm.base.Status
 import com.prbale.kotlinmvvm.base.di.Injection
 import com.prbale.kotlinmvvm.base.extensions.gone
+import com.prbale.kotlinmvvm.base.extensions.hide
 import com.prbale.kotlinmvvm.base.extensions.show
 import com.prbale.kotlinmvvm.features.museums.model.MuseumList
 import com.prbale.kotlinmvvm.features.museums.viewmodel.MuseumViewModel
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.layout_error.*
 
 class MuseumActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: MuseumViewModel
+    private lateinit var museumViewModel: MuseumViewModel
     private lateinit var adapter: MuseumAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +31,7 @@ class MuseumActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        adapter = MuseumAdapter(viewModel.getMuseums().value?.data?.data ?: emptyList())
+        adapter = MuseumAdapter(museumViewModel.getMuseums().value?.data?.data ?: emptyList())
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
@@ -39,19 +40,19 @@ class MuseumActivity : AppCompatActivity() {
         }
 
         loadBtn?.setOnClickListener {
-            viewModel.loadMuseums()
+            museumViewModel.loadMuseums()
         }
     }
 
     //view model
     private fun setupViewModel() {
-        viewModel = ViewModelProvider(
+        museumViewModel = ViewModelProvider(
             this,
             Injection.provideViewModelFactory()
         ).get(MuseumViewModel::class.java)
 
         // Set Observers
-        viewModel.getMuseums()
+        museumViewModel.getMuseums()
             .observe(this, Observer {
                 when(it.status) {
                     Status.LOADING -> {
@@ -74,8 +75,7 @@ class MuseumActivity : AppCompatActivity() {
     // Success
     private fun displayMuseums(data: MuseumList?) {
 
-        layoutError.visibility = View.GONE
-        layoutEmpty.visibility = View.GONE
+        hide(layoutError, layoutEmpty)
         recyclerView?.visibility = View.VISIBLE
 
         data?.data?.let {
@@ -92,6 +92,7 @@ class MuseumActivity : AppCompatActivity() {
     // Loading
     private fun showLoading() {
         progressBar.show()
+        hide(recyclerView, layoutEmpty, layoutError)
     }
 
     private fun hideLoading() {
@@ -101,21 +102,18 @@ class MuseumActivity : AppCompatActivity() {
     private fun displayError(errMsg: String?) {
         layoutError.show()
         textViewError.text = errMsg
-
-        progressBar.gone()
-        recyclerView?.gone()
-        layoutEmpty.gone()
+        hide(progressBar, recyclerView, layoutEmpty)
     }
 
     private fun showEmptyList() {
-        progressBar.gone()
-        recyclerView?.gone()
-        layoutError.gone()
+        hide(progressBar, recyclerView, layoutError)
         layoutEmpty.show()
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadMuseums()
+
+        // Load on app launch
+        museumViewModel.loadMuseums()
     }
 }

@@ -19,7 +19,7 @@ class MuseumViewModel(private val repository: MuseumRepository) : ViewModel() {
 
         repository.fetchMuseums(object : OperationCallback<MuseumList> {
             override fun onError(error: String?) {
-                museumsLiveData.postValue(Resource.error("An error has occurred", null))
+                museumsLiveData.postValue(Resource.error(error, null))
             }
 
             override fun onSuccess(data: MuseumList?) {
