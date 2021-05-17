@@ -1,10 +1,8 @@
-package com.prbale.kotlinmvvm.features.museums.model.data
+package com.prbale.kotlinmvvm.features.museums.model
 
 import com.prbale.kotlinmvvm.base.api.ApiClient
 import com.prbale.kotlinmvvm.base.api.OperationCallback
-import com.prbale.kotlinmvvm.features.museums.model.Museum
-import com.prbale.kotlinmvvm.features.museums.model.MuseumDataSource
-import com.prbale.kotlinmvvm.features.museums.model.MuseumList
+import io.reactivex.rxjava3.core.Single
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,6 +11,10 @@ class MuseumRemoteDataSource(apiClient: ApiClient) : MuseumDataSource {
 
     private var call: Call<MuseumList>? = null
     private val service = apiClient.build()
+
+    override fun fetchMuseums(): Single<MuseumList> {
+        return service.fetchMuseums()
+    }
 
     override fun retrieveMuseums(callback: OperationCallback<MuseumList>) {
 

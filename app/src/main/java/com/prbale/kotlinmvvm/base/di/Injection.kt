@@ -4,7 +4,7 @@ import com.prbale.kotlinmvvm.base.ViewModelFactory
 import com.prbale.kotlinmvvm.base.api.ApiClient
 import com.prbale.kotlinmvvm.features.museums.model.MuseumDataSource
 import com.prbale.kotlinmvvm.features.museums.model.MuseumRepository
-import com.prbale.kotlinmvvm.features.museums.model.data.MuseumRemoteDataSource
+import com.prbale.kotlinmvvm.features.museums.model.MuseumRemoteDataSource
 
 object Injection {
 

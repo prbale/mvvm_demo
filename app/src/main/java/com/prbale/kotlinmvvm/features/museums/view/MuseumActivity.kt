@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.prbale.kotlinmvvm.R
-import com.prbale.kotlinmvvm.base.Status
-import com.prbale.kotlinmvvm.base.di.Injection
+import com.prbale.kotlinmvvm.base.Resource
+import com.prbale.kotlinmvvm.base.Resource.Status.*
+import com.prbale.kotlinmvvm.base.extensions.getViewModel
 import com.prbale.kotlinmvvm.base.extensions.gone
 import com.prbale.kotlinmvvm.base.extensions.hide
 import com.prbale.kotlinmvvm.base.extensions.show
 import com.prbale.kotlinmvvm.features.museums.model.MuseumList
+import com.prbale.kotlinmvvm.features.museums.view.adapter.MuseumAdapter
 import com.prbale.kotlinmvvm.features.museums.viewmodel.MuseumViewModel
 import kotlinx.android.synthetic.main.activity_museum.*
 import kotlinx.android.synthetic.main.layout_error.*
@@ -27,6 +28,7 @@ class MuseumActivity : AppCompatActivity() {
         setContentView(R.layout.activity_museum)
 
         setupViewModel()
+
         setupUI()
     }
 
@@ -40,36 +42,42 @@ class MuseumActivity : AppCompatActivity() {
         }
 
         loadBtn?.setOnClickListener {
-            museumViewModel.loadMuseums()
+
+            // Using Retrofit - enqueue call
+            //museumViewModel.loadMuseums()
+
+            // Using Retrofit - RxJava
+            museumViewModel.fetchMuseums()
         }
     }
 
     //view model
     private fun setupViewModel() {
-        museumViewModel = ViewModelProvider(
-            this,
-            Injection.provideViewModelFactory()
-        ).get(MuseumViewModel::class.java)
+
+        // Create
+        museumViewModel = this.getViewModel(MuseumViewModel::class.java)
 
         // Set Observers
-        museumViewModel.getMuseums()
-            .observe(this, Observer {
-                when(it.status) {
-                    Status.LOADING -> {
-                        showLoading()
-                    }
-                    Status.SUCCESS -> {
-                        hideLoading()
-                        displayMuseums(it.data)
-                    }
-                    Status.ERROR -> {
-                        hideLoading()
-                        displayError(it.message)
-                    }
-                }
-            })
+        museumViewModel.getMuseums().observe(this, Observer {
+            handleMuseumDataState(it)
+        })
 
+    }
 
+    private fun handleMuseumDataState(it: Resource<MuseumList>) {
+        when (it.status) {
+            LOADING -> {
+                showLoading()
+            }
+            SUCCESS -> {
+                hideLoading()
+                displayMuseums(it.data)
+            }
+            ERROR -> {
+                hideLoading()
+                displayError(it.message)
+            }
+        }
     }
 
     // Success

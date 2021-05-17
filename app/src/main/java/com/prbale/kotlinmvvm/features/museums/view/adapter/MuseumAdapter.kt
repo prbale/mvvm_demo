@@ -1,4 +1,4 @@
-package com.prbale.kotlinmvvm.features.museums.view
+package com.prbale.kotlinmvvm.features.museums.view.adapter
 
 import android.view.LayoutInflater
 import android.view.View

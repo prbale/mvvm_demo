@@ -1,7 +1,12 @@
 package com.prbale.kotlinmvvm.base
 
+class Resource<out T> private constructor(val status: Status, val data: T?, val message: String?) {
 
-data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
+    enum class Status {
+        SUCCESS,
+        ERROR,
+        LOADING
+    }
 
     companion object {
 

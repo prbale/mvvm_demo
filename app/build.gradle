@@ -23,6 +23,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
@@ -50,4 +56,9 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.gson"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttp3"
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
+
 }
