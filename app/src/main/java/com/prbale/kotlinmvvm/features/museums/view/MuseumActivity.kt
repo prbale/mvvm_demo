@@ -6,12 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.prbale.kotlinmvvm.R
-import com.prbale.kotlinmvvm.base.Resource
-import com.prbale.kotlinmvvm.base.Resource.Status.*
-import com.prbale.kotlinmvvm.base.extensions.getViewModel
-import com.prbale.kotlinmvvm.base.extensions.gone
-import com.prbale.kotlinmvvm.base.extensions.hide
-import com.prbale.kotlinmvvm.base.extensions.show
+import com.prbale.kotlinmvvm.data.remote.api.Resource
+import com.prbale.kotlinmvvm.data.remote.api.Resource.Status.*
+import com.prbale.kotlinmvvm.extensions.*
 import com.prbale.kotlinmvvm.features.museums.model.MuseumList
 import com.prbale.kotlinmvvm.features.museums.view.adapter.MuseumAdapter
 import com.prbale.kotlinmvvm.features.museums.viewmodel.MuseumViewModel
@@ -55,7 +52,7 @@ class MuseumActivity : AppCompatActivity() {
     private fun setupViewModel() {
 
         // Create
-        museumViewModel = this.getViewModel(MuseumViewModel::class.java)
+        museumViewModel = obtainViewModel(MuseumViewModel::class.java)
 
         // Set Observers
         museumViewModel.getMuseums().observe(this, Observer {

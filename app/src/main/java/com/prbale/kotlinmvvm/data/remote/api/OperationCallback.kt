@@ -1,4 +1,4 @@
-package com.prbale.kotlinmvvm.base.api
+package com.prbale.kotlinmvvm.data.remote.api
 
 interface OperationCallback<T> {
     fun onSuccess(data: T?)

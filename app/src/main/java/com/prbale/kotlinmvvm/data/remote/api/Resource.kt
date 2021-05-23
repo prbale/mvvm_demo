@@ -1,7 +1,13 @@
-package com.prbale.kotlinmvvm.base
+package com.prbale.kotlinmvvm.data.remote.api
 
+/**
+ * A generic class that holds a value with its loading status.
+ * @param <T>
+ * Author: Prashant Bale
+ */
 class Resource<out T> private constructor(val status: Status, val data: T?, val message: String?) {
 
+    // Status Enum Class
     enum class Status {
         SUCCESS,
         ERROR,

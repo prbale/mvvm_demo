@@ -3,9 +3,8 @@ package com.prbale.kotlinmvvm.features.museums.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.prbale.kotlinmvvm.base.Resource
-import com.prbale.kotlinmvvm.base.api.OperationCallback
-import com.prbale.kotlinmvvm.features.museums.model.Museum
+import com.prbale.kotlinmvvm.data.remote.api.Resource
+import com.prbale.kotlinmvvm.data.remote.api.OperationCallback
 import com.prbale.kotlinmvvm.features.museums.model.MuseumList
 import com.prbale.kotlinmvvm.features.museums.model.MuseumRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers

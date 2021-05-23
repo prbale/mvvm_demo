@@ -1,4 +1,4 @@
-package com.prbale.kotlinmvvm.base.api
+package com.prbale.kotlinmvvm.data.remote.api
 
 import com.prbale.kotlinmvvm.features.museums.model.MuseumList
 import io.reactivex.rxjava3.core.Single
@@ -18,7 +18,7 @@ object ApiClient {
     fun build(): ServicesApiInterface {
 
         val builder = Retrofit.Builder()
-            .baseUrl(AppConstants.API_BASE_URL)
+            .baseUrl(ApiConstants.API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
 

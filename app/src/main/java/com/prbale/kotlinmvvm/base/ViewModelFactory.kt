@@ -6,7 +6,7 @@ import com.prbale.kotlinmvvm.features.museums.model.MuseumRepository
 import com.prbale.kotlinmvvm.features.museums.viewmodel.MuseumViewModel
 
 @Suppress("UNCHECKED_CAST")
-class ViewModelFactory(private val repository: MuseumRepository) : ViewModelProvider.Factory {
+class   ViewModelFactory(private val repository: MuseumRepository) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 

@@ -1,4 +1,4 @@
-package com.prbale.kotlinmvvm.base.extensions
+package com.prbale.kotlinmvvm.extensions
 
 import android.content.Context
 import android.os.Handler

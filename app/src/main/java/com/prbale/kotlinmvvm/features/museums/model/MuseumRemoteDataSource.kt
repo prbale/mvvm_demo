@@ -1,7 +1,7 @@
 package com.prbale.kotlinmvvm.features.museums.model
 
-import com.prbale.kotlinmvvm.base.api.ApiClient
-import com.prbale.kotlinmvvm.base.api.OperationCallback
+import com.prbale.kotlinmvvm.data.remote.api.ApiClient
+import com.prbale.kotlinmvvm.data.remote.api.OperationCallback
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Call
 import retrofit2.Callback
